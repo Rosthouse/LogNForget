@@ -1,20 +1,24 @@
 package rosthouse.lognforget;
 
-import rosthouse.lognforget.shortcut.ShortCutListener;
 import com.melloware.jintellitype.JIntellitype;
 import java.net.URISyntaxException;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.mockito.Mock;
+import rosthouse.lognforget.shortcut.ShortCutListener;
 
 @Ignore
 public class ShortCutListenerTest {
 
     ShortCutListener listener;
 
+    @Mock
+    JIntellitype mockInstance;
+
     @Before
     public void setup() throws URISyntaxException {
-        listener = new ShortCutListener();
+        listener = new ShortCutListener(mockInstance);
     }
 
     @Test

@@ -1,6 +1,3 @@
-/**
- * $HeadURL$
- */
 package rosthouse.lognforget.shortcut;
 
 import javafx.fxml.FXML;
@@ -10,17 +7,10 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 
 /**
- * TODO
+ * Controlls GUIs created by the fxml file editor.fxml.
  *
- * @author jopa
- * @copyright (c) 2007-2015, Wuerth ITensis AG
+ * @author Rosthouse
  * @created 10.03.2015 12:46:54
- *
- * @$Revision$
- *
- * @$LastChangedBy$
- * @$LastChangedDate$
- * @$Id$
  */
 public class ShortCutListenerController extends Pane {
 
@@ -30,7 +20,7 @@ public class ShortCutListenerController extends Pane {
     @FXML
     public void onKeyTyped(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            this.getParent().setVisible(false);
+            int i = 1;
         }
     }
 

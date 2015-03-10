@@ -19,7 +19,9 @@ public class MainApp extends Application {
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);
         stage.show();
-        ShortCutListener listener = new ShortCutListener();
+        JIntellitype instance = JIntellitype.getInstance();
+        ShortCutListener listener = new ShortCutListener(instance);
+        instance.addHotKeyListener(listener);
         listener.registerHotKeyForLogging(JIntellitype.MOD_WIN, 'C');
     }
 
