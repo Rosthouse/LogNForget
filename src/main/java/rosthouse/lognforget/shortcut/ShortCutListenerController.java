@@ -5,9 +5,12 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URL;
+import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -21,7 +24,7 @@ import javafx.stage.Window;
  * @author Rosthouse
  * @created 10.03.2015 12:46:54
  */
-public class ShortCutListenerController extends Pane {
+public class ShortCutListenerController extends Pane implements Initializable {
 
     @FXML
     private TextField logField;
@@ -53,7 +56,7 @@ public class ShortCutListenerController extends Pane {
         try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(logDocument)))) {
             out.println(text);
         } catch (IOException e) {
-            //exception handling left as an exercise for the reader
+            Logger.getLogger(ShortCutListenerController.class.getName()).log(Level.SEVERE, null, e);
         }
     }
 
@@ -61,6 +64,11 @@ public class ShortCutListenerController extends Pane {
     public void onEnter() {
         writeToLogFile();
         closeWindow();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.logField.requestFocus();
     }
 
 }
