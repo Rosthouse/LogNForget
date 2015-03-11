@@ -1,10 +1,19 @@
 package rosthouse.lognforget.shortcut;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import javafx.stage.Window;
 
 /**
  * Controlls GUIs created by the fxml file editor.fxml.
@@ -20,8 +29,38 @@ public class ShortCutListenerController extends Pane {
     @FXML
     public void onKeyTyped(KeyEvent event) {
         if (event.getCode() == KeyCode.ENTER) {
-            int i = 1;
+            closeWindow();
         }
+    }
+
+    public void closeWindow() {
+        Window window = logField.getScene().getWindow();
+        Stage stage = (Stage) window;
+        stage.close();
+    }
+
+    public void writeToLogFile() {
+        String text = logField.getText();
+        String path = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "log.txt";
+        File logDocument = new File(path);
+        if (!logDocument.exists()) {
+            try {
+                logDocument.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(ShortCutListenerController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(logDocument)))) {
+            out.println(text);
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+    }
+
+    @FXML
+    public void onEnter() {
+        writeToLogFile();
+        closeWindow();
     }
 
 }

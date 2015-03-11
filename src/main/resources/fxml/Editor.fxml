@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="339.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="rosthouse.lognforget.shortcut.ShortCutListenerController">
     <children>
-        <TextField fx:id="logField" alignment="CENTER" layoutX="46.0" layoutY="13.0" minWidth="-Infinity" onKeyTyped="#onKeyTyped" text="Log it n forget it" />
+        <TextField fx:id="logField" layoutX="4.0" minWidth="-Infinity" onAction="#onEnter" onKeyTyped="#onKeyTyped" prefHeight="50.0" prefWidth="332.0" text="Log it n forget it" />
     </children>
+   <effect>
+      <DropShadow />
+   </effect>
 </Pane>
