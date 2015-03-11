@@ -3,6 +3,7 @@ package rosthouse.lognforget;
 import com.melloware.jintellitype.JIntellitype;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import rosthouse.lognforget.shortcut.ShortCutListener;
 
@@ -10,6 +11,7 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        Platform.setImplicitExit(false);
         JIntellitype instance = JIntellitype.getInstance();
         ShortCutListener listener = new ShortCutListener(instance);
         instance.addHotKeyListener(listener);
