@@ -2,6 +2,8 @@ package rosthouse.lognforget.shortcut;
 
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
+import java.awt.Color;
+import java.awt.Paint;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,11 +37,12 @@ public class ShortCutListener implements HotkeyListener, CloseListener {
             final Parent root = loader.load();
             ShortCutListenerController controller = loader.getController();
             controller.setCloseListener(this);
-            final Scene scene = new Scene(root);
+            final Scene scene = new Scene(root );
             scene.getStylesheets().add("/styles/Styles.css");
+            scene.setFill(new javafx.scene.paint.Color(0, 0, 0, 0));
             stage = new Stage();
             stage.setAlwaysOnTop(true);
-            stage.initStyle(StageStyle.UNDECORATED);
+            stage.initStyle(StageStyle.TRANSPARENT);
             stage.setScene(scene);
             stage.show();
         } catch (IOException ex) {

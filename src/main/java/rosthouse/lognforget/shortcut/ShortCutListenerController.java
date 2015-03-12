@@ -44,14 +44,9 @@ public class ShortCutListenerController extends Pane implements Initializable {
         closeListener.closeStage();
     }
 
-    public void writeToLogFile() {
-        String logText = logField.getText();
-        logger.logText(logText);
-    }
-
     @FXML
     public void onEnter() {
-        writeToLogFile();
+        logger.logText(logField.getText());
         closeWindow();
     }
 

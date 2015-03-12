@@ -15,7 +15,7 @@ public class MainApp extends Application {
         JIntellitype instance = JIntellitype.getInstance();
         ShortCutListener listener = new ShortCutListener(instance);
         instance.addHotKeyListener(listener);
-        listener.registerHotKeyForLogging(JIntellitype.MOD_WIN, 'C');
+        listener.registerHotKeyForLogging(JIntellitype.MOD_WIN, 'A');
     }
 
     /**

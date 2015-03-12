@@ -1,3 +1,9 @@
 .button {
     -fx-font-weight: bold;
 }
+
+.main{
+    -fx-background-color:  #1d1d1d;
+    -fx-border-radius: 10 10 10 10;
+    -fx-background-radius: 10 10 10 10;
+}
