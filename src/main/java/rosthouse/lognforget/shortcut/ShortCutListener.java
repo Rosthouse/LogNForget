@@ -26,8 +26,9 @@ public class ShortCutListener implements HotkeyListener, CloseListener {
     private static final int SHORTCUT_LISTENER_IDENTIFIER = 1;
     private Stage stage;
 
-    public ShortCutListener(JIntellitype instance) {
-        this.instance = instance;
+    public ShortCutListener() {
+        this.instance = JIntellitype.getInstance();
+        instance.addHotKeyListener(this);
     }
 
     private void openWindow() {

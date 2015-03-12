@@ -13,12 +13,9 @@ public class ShortCutListenerTest {
 
     ShortCutListener listener;
 
-    @Mock
-    JIntellitype mockInstance;
-
     @Before
     public void setup() throws IOException {
-        listener = new ShortCutListener(mockInstance);
+        listener = new ShortCutListener();
     }
 
     @Test
