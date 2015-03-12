@@ -20,7 +20,7 @@ import javafx.stage.StageStyle;
  * @author Rosthouse
  * @created 09.03.2015 17:23:05
  */
-public class ShortCutListener implements HotkeyListener, CloseListener {
+public class ShortCutListener implements HotkeyListener {
 
     final private JIntellitype instance;
     private static final int SHORTCUT_LISTENER_IDENTIFIER = 1;
@@ -36,8 +36,6 @@ public class ShortCutListener implements HotkeyListener, CloseListener {
             final FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/fxml/Editor.fxml"));
             final Parent root = loader.load();
-            ShortCutListenerController controller = loader.getController();
-            controller.setCloseListener(this);
             final Scene scene = new Scene(root );
             scene.getStylesheets().add("/styles/Styles.css");
             scene.setFill(new javafx.scene.paint.Color(0, 0, 0, 0));
@@ -62,10 +60,5 @@ public class ShortCutListener implements HotkeyListener, CloseListener {
 
     public void registerHotKeyForLogging(int modifier, int keycode) {
         instance.registerHotKey(SHORTCUT_LISTENER_IDENTIFIER, modifier, keycode);
-    }
-
-    @Override
-    public void closeStage() {
-        this.stage.close();
     }
 }

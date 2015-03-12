@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import rosthouse.lognforget.shortcut.loggers.FileLogger;
 import rosthouse.lognforget.shortcut.loggers.Logger;
 
@@ -21,10 +22,9 @@ import rosthouse.lognforget.shortcut.loggers.Logger;
 public class ShortCutListenerController extends Pane implements Initializable {
 
     @FXML
-    private Parent parent;
+    private StackPane parent;
     @FXML
     private TextField logField;
-    private CloseListener closeListener;
     private Logger logger;
 
     @Override
@@ -41,7 +41,7 @@ public class ShortCutListenerController extends Pane implements Initializable {
     }
 
     public void closeWindow() {
-        closeListener.closeStage();
+        parent.getScene().getWindow().hide();
     }
 
     @FXML
@@ -50,9 +50,6 @@ public class ShortCutListenerController extends Pane implements Initializable {
         closeWindow();
     }
 
-    void setCloseListener(ShortCutListener closeListener) {
-        this.closeListener = closeListener;
-    }
 
     void setLogger(Logger logger) {
         this.logger = logger;
