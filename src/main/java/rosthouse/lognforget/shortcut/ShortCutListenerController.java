@@ -34,8 +34,8 @@ public class ShortCutListenerController extends Pane implements Initializable {
     private CloseListener closeListener;
 
     @FXML
-    public void onKeyTyped(KeyEvent event) {
-        if (event.getCode() == KeyCode.ENTER) {
+    public void onKeyDown(KeyEvent event) {
+        if (event.getCode() == KeyCode.ESCAPE) {
             closeWindow();
         }
     }
