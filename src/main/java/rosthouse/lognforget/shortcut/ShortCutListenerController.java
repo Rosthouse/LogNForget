@@ -1,16 +1,7 @@
 package rosthouse.lognforget.shortcut;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
@@ -18,6 +9,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
+import rosthouse.lognforget.shortcut.loggers.FileLogger;
+import rosthouse.lognforget.shortcut.loggers.Logger;
 
 /**
  * Controlls GUIs created by the fxml file editor.fxml.
@@ -32,6 +25,13 @@ public class ShortCutListenerController extends Pane implements Initializable {
     @FXML
     private TextField logField;
     private CloseListener closeListener;
+    private Logger logger;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        this.logField.requestFocus();
+        this.logger = new FileLogger();
+    }
 
     @FXML
     public void onKeyDown(KeyEvent event) {
@@ -46,22 +46,7 @@ public class ShortCutListenerController extends Pane implements Initializable {
 
     public void writeToLogFile() {
         String logText = logField.getText();
-        String path = System.getProperty("user.home") + File.separator + "Documents" + File.separator + "log.txt";
-        File logDocument = new File(path);
-        if (!logDocument.exists()) {
-            try {
-                logDocument.createNewFile();
-            } catch (IOException ex) {
-                Logger.getLogger(ShortCutListenerController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        LocalDateTime logTime = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy - HH:mm:ss");
-        try (PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(logDocument, true)))) {
-            out.println(String.format("%s - %s", formatter.format(logTime), logText));
-        } catch (IOException e) {
-            Logger.getLogger(ShortCutListenerController.class.getName()).log(Level.SEVERE, null, e);
-        }
+        logger.logText(logText);
     }
 
     @FXML
@@ -70,13 +55,12 @@ public class ShortCutListenerController extends Pane implements Initializable {
         closeWindow();
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        this.logField.requestFocus();
-    }
-
     void setCloseListener(ShortCutListener closeListener) {
         this.closeListener = closeListener;
+    }
+
+    void setLogger(Logger logger) {
+        this.logger = logger;
     }
 
 }
