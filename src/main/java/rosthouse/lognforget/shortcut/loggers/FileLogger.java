@@ -16,15 +16,8 @@ import rosthouse.lognforget.shortcut.ShortCutListenerController;
 /**
  * TODO
  *
- * @author Patrick Joos <patrick.joos@wuerth-itensis.ch>
- * @copyright (c) 2007-2015, Wuerth ITensis AG
+ * @author Rosthouse <rosthouse@gmail.com>
  * @created 12.03.2015 14:49:06
- *
- * @$Revision$
- *
- * @$LastChangedBy$
- * @$LastChangedDate$
- * @$Id$
  */
 public class FileLogger implements Logger {
 
