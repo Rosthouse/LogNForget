@@ -2,14 +2,17 @@ package rosthouse.lognforget.options;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import org.controlsfx.dialog.Dialogs;
+import rosthouse.lognforget.Settings;
+import rosthouse.lognforget.util.Constants;
 import rosthouse.lognforget.util.ModKeyMapping;
 
 /**
@@ -29,7 +32,12 @@ public class OptionsController implements Initializable, ChangeListener<Boolean>
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        shortCut.focusedProperty().addListener(this);
+        try {
+            shortCut.setText(Settings.getModKey().name() + "+" + (char) Settings.getShortCutKey());
+            shortCut.focusedProperty().addListener(this);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void closeWindow() {
@@ -60,9 +68,9 @@ public class OptionsController implements Initializable, ChangeListener<Boolean>
                 break;
         }
         String text = shortCut.getText();
-        if(mapping != null){
+        if (mapping != null) {
             text += mapping.name() + "+";
-        } else if(!text.isEmpty()){
+        } else if (!text.isEmpty()) {
             text += key.getText();
             parent.requestFocus();
         } else {
@@ -71,8 +79,6 @@ public class OptionsController implements Initializable, ChangeListener<Boolean>
         }
         shortCut.setText(text);
     }
-    
-    
 
     @FXML
     public void onSave() {
@@ -91,12 +97,15 @@ public class OptionsController implements Initializable, ChangeListener<Boolean>
     }
 
     private void setOptions() {
-
+        String text = shortCut.getText();
+        String[] values = text.split("\\+");
+        Settings.setModKey(values[0]);
+        Settings.setShortCutKey( values[1].trim().charAt(0));
     }
 
     @Override
     public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-        if(newValue){
+        if (newValue) {
             shortCut.clear();
             shortCut.setEditable(true);
         } else {

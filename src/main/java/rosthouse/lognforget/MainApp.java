@@ -1,18 +1,21 @@
 package rosthouse.lognforget;
 
 import com.melloware.jintellitype.JIntellitype;
+import java.util.prefs.Preferences;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import rosthouse.lognforget.shortcut.ShortCutListener;
+import rosthouse.lognforget.util.Constants;
+import rosthouse.lognforget.util.ModKeyMapping;
 
 public class MainApp extends Application {
 
-    public static final String LOG_N_FORGET = "LogNForget";
 
     @Override
     public void start(Stage stage) throws Exception {
+        
         Platform.setImplicitExit(false);
         JIntellitype instance = JIntellitype.getInstance();
         initializeShortCutListener(instance);
@@ -21,7 +24,8 @@ public class MainApp extends Application {
 
     private void initializeShortCutListener(JIntellitype instance) {
         ShortCutListener listener = new ShortCutListener();
-        listener.registerHotKeyForLogging(JIntellitype.MOD_WIN, 'A');
+        
+        listener.registerHotKeyForLogging(Settings.getModKey(), Settings.getShortCutKey());
     }
 
 

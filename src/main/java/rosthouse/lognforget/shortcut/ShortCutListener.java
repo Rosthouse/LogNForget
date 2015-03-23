@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import rosthouse.lognforget.util.ModKeyMapping;
 
 /**
  * Listens to a defined shortcut and opens a text input field when that occurs.
@@ -58,7 +59,7 @@ public class ShortCutListener implements HotkeyListener {
         }
     }
 
-    public void registerHotKeyForLogging(int modifier, int keycode) {
-        instance.registerHotKey(SHORTCUT_LISTENER_IDENTIFIER, modifier, keycode);
+    public void registerHotKeyForLogging(ModKeyMapping modifier, int keycode) {
+        instance.registerHotKey(SHORTCUT_LISTENER_IDENTIFIER, modifier.getJIntelitypeKey(), keycode);
     }
 }

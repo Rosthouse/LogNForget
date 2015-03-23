@@ -20,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
 import rosthouse.lognforget.options.Options;
+import rosthouse.lognforget.util.Constants;
 
 /**
  *
@@ -49,12 +50,12 @@ public class Tray {
 
     private TrayIcon loadTrayIcon() {
         Image image = Toolkit.getDefaultToolkit().getImage(getClass().getResource("/com/famfamfam/silk/accept.png"));
-        TrayIcon icon = new TrayIcon(image, MainApp.LOG_N_FORGET);
+        TrayIcon icon = new TrayIcon(image, Constants.LOG_N_FORGET);
         return icon;
     }
 
     private PopupMenu createPopupMenu(SystemTray tray, TrayIcon icon) throws HeadlessException {
-        PopupMenu menu = new PopupMenu(MainApp.LOG_N_FORGET);
+        PopupMenu menu = new PopupMenu(Constants.LOG_N_FORGET);
         MenuItem options = new MenuItem("Options");
         options.addActionListener((ActionEvent e) -> {
             openOptionsWindow();
@@ -79,7 +80,7 @@ public class Tray {
     }
 
     private void closeApplication(SystemTray tray, TrayIcon icon) {
-        System.out.println("Ending " + MainApp.LOG_N_FORGET);
+        System.out.println("Ending " + Constants.LOG_N_FORGET);
         JIntellitype.getInstance().cleanUp();
         tray.remove(icon);
         Platform.exit();
