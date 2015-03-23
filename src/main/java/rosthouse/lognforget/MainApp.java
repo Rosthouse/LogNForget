@@ -1,22 +1,10 @@
 package rosthouse.lognforget;
 
 import com.melloware.jintellitype.JIntellitype;
-import java.awt.AWTException;
-import java.awt.HeadlessException;
-import java.awt.Image;
-import java.awt.MenuItem;
-import java.awt.PopupMenu;
-import java.awt.SystemTray;
-import java.awt.Toolkit;
-import java.awt.TrayIcon;
-import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.application.Platform;
 import javafx.stage.Stage;
-import rosthouse.lognforget.options.Options;
 import rosthouse.lognforget.shortcut.ShortCutListener;
 
 public class MainApp extends Application {

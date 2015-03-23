@@ -188,8 +188,8 @@
                         <artifactId>javafx-maven-plugin</artifactId>
                         <executions>
                             <execution>
-                                <id>create-runnable-jar</id>
-                                <phase>install</phase>
+                                <id>create-installer</id>
+                                <phase>package</phase>
                                 <goals>
                                     <goal>native</goal>
                                 </goals>
