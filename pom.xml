@@ -19,7 +19,9 @@
         <name>Rosthouse</name>
     </organization>
 
+
     <build>
+        <finalName>${project.name}</finalName>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -199,7 +201,8 @@
                                     <goal>native</goal>
                                 </goals>
                                 <configuration>
-                                    <mainClass>${mainClass}}</mainClass>
+                                    <mainClass>${mainClass}</mainClass>
+                                    <verbose>true</verbose>
                                 </configuration>
                             </execution>
                         </executions>
