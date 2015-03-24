@@ -7,14 +7,16 @@ package rosthouse.lognforget.util;
 
 /**
  * Class that holds constants used throughout the app.
+ *
  * @author Rosthouse <rosthouse@gmail.com>
  */
 public final class Constants {
+
     public static final String MODIFIER_PREFERENCE = "Modifier";
     public static final String LOG_N_FORGET = "LogNForget";
     public static final String SHORTCUT_KEY_PREFERENCE = "ShortcutKey";
-    private Constants(){
-        
+
+    private Constants() {
     }
-    
+
 }

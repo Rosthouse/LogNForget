@@ -2,7 +2,6 @@ package rosthouse.lognforget.options;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.prefs.Preferences;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -10,9 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
-import org.controlsfx.dialog.Dialogs;
 import rosthouse.lognforget.Settings;
-import rosthouse.lognforget.util.Constants;
 import rosthouse.lognforget.util.ModKeyMapping;
 
 /**
@@ -71,7 +68,7 @@ public class OptionsController implements Initializable, ChangeListener<Boolean>
         if (mapping != null) {
             text += mapping.name() + "+";
         } else if (!text.isEmpty()) {
-            text += key.getText();
+            text += key.getText().toUpperCase();
             parent.requestFocus();
         } else {
             text = "A shortcut must contain a modifier key (CTRL, ALT, SHIFT, WIN)";
@@ -100,7 +97,7 @@ public class OptionsController implements Initializable, ChangeListener<Boolean>
         String text = shortCut.getText();
         String[] values = text.split("\\+");
         Settings.setModKey(values[0]);
-        Settings.setShortCutKey( values[1].trim().charAt(0));
+        Settings.setShortCutKey(values[1].trim().charAt(0));
     }
 
     @Override

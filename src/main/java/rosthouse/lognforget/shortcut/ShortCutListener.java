@@ -2,17 +2,18 @@ package rosthouse.lognforget.shortcut;
 
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
-import java.awt.Color;
-import java.awt.Paint;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.PreferenceChangeEvent;
+import java.util.prefs.PreferenceChangeListener;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import rosthouse.lognforget.Settings;
 import rosthouse.lognforget.util.ModKeyMapping;
 
 /**
@@ -21,7 +22,7 @@ import rosthouse.lognforget.util.ModKeyMapping;
  * @author Rosthouse
  * @created 09.03.2015 17:23:05
  */
-public class ShortCutListener implements HotkeyListener {
+public class ShortCutListener implements HotkeyListener, PreferenceChangeListener {
 
     final private JIntellitype instance;
     private static final int SHORTCUT_LISTENER_IDENTIFIER = 1;
@@ -30,6 +31,7 @@ public class ShortCutListener implements HotkeyListener {
     public ShortCutListener() {
         this.instance = JIntellitype.getInstance();
         instance.addHotKeyListener(this);
+        Settings.addPreferencesChangedListener(this);
     }
 
     private void openWindow() {
@@ -37,7 +39,7 @@ public class ShortCutListener implements HotkeyListener {
             final FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("/fxml/Editor.fxml"));
             final Parent root = loader.load();
-            final Scene scene = new Scene(root );
+            final Scene scene = new Scene(root);
             scene.getStylesheets().add("/styles/Styles.css");
             scene.setFill(new javafx.scene.paint.Color(0, 0, 0, 0));
             stage = new Stage();
@@ -61,5 +63,13 @@ public class ShortCutListener implements HotkeyListener {
 
     public void registerHotKeyForLogging(ModKeyMapping modifier, int keycode) {
         instance.registerHotKey(SHORTCUT_LISTENER_IDENTIFIER, modifier.getJIntelitypeKey(), keycode);
+    }
+
+    @Override
+    public void preferenceChange(PreferenceChangeEvent evt) {
+        instance.unregisterHotKey(SHORTCUT_LISTENER_IDENTIFIER);
+        ModKeyMapping modKeyMapping = Settings.getModKey();
+        char shortCutKey = (char) Settings.getShortCutKey();
+        instance.registerHotKey(SHORTCUT_LISTENER_IDENTIFIER, modKeyMapping.getJIntelitypeKey(), shortCutKey);
     }
 }
