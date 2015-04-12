@@ -2,18 +2,25 @@ package rosthouse.lognforget.shortcut;
 
 import java.net.URL;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
+import rosthouse.lognforget.WindowManager;
+import rosthouse.lognforget.reminder.ReminderController;
 import rosthouse.lognforget.shortcut.loggers.FileLogger;
 import rosthouse.lognforget.shortcut.loggers.Logger;
 
@@ -65,14 +72,28 @@ public class ShortCutListenerController extends Pane implements Initializable {
 
     private void createReminder(String text) {
         Duration duration = getDurationFromNowUntilReminder(text);
-        String textWithoutModifier = removeModifierFromText(text);
-
+        final String textWithoutModifier = removeModifierFromText(text);
         Timer timer = new Timer();
         TimerTask tTask = new TimerTask() {
 
             @Override
             public void run() {
-                System.out.println(text);
+                    if (Platform.isFxApplicationThread()) {
+                   openWindow(textWithoutModifier);
+               } else {
+                   Platform.runLater(() -> openWindow(textWithoutModifier));
+               }
+            }
+
+            private void openWindow(String text) {
+                FXMLLoader loader = WindowManager.createLoader("/fxml/Reminder.fxml");
+                Parent root = WindowManager.createRootNode(loader);
+                Stage stage = WindowManager.createStage(root);
+                ReminderController controller = loader.getController();
+                controller.setTime(LocalDateTime.now());
+                controller.setText(text);
+                stage.setAlwaysOnTop(true);
+                stage.show();
             }
         };
         timer.schedule(tTask, duration.toMillis());

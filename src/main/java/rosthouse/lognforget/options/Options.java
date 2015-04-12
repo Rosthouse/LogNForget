@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import rosthouse.lognforget.WindowManager;
 import rosthouse.lognforget.shortcut.ShortCutListener;
 import rosthouse.lognforget.shortcut.ShortCutListenerController;
 
@@ -24,14 +25,8 @@ public class Options {
     private final Stage stage;
 
     public Options() throws IOException {
-        final FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/fxml/Options.fxml"));
-        final Parent root = loader.load();
-        final Scene scene = new Scene(root);
-        scene.getStylesheets().add("/styles/Styles.css");
-        stage = new Stage();
+        stage = WindowManager.loadWindow("/fxml/Options.fxml");
         stage.setAlwaysOnTop(true);
-        stage.setScene(scene);
         stage.show();
     }
 
