@@ -23,7 +23,8 @@ import rosthouse.lognforget.options.Options;
 import rosthouse.lognforget.util.Constants;
 
 /**
- *
+ * Handles access to the Tray bar. Meaning it contains everything needed to set up a clickable tray icon in a task bar.
+ * 
  * @author Rosthouse <rosthouse@gmail.com>
  */
 public class Tray {
