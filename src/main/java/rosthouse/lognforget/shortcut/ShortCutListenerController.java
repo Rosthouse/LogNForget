@@ -18,11 +18,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import rosthouse.lognforget.WindowManager;
 import rosthouse.lognforget.reminder.ReminderController;
 import rosthouse.lognforget.shortcut.loggers.FileLogger;
 import rosthouse.lognforget.shortcut.loggers.Logger;
+import sun.audio.AudioPlayer;
 
 /**
  * Controlls GUIs created by the fxml file editor.fxml.
@@ -94,6 +96,8 @@ public class ShortCutListenerController extends Pane implements Initializable {
                 controller.setText(text);
                 stage.setAlwaysOnTop(true);
                 stage.show();
+                AudioClip alert = new AudioClip(getClass().getResource("/audio/alert/72125__kizilsungur__sweetalertsound1.wav").toString());
+                alert.play();
             }
         };
         timer.schedule(tTask, duration.toMillis());
