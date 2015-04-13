@@ -1,6 +1,9 @@
 package rosthouse.lognforget.options;
 
+import com.sun.xml.internal.ws.util.StringUtils;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -19,6 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
 import rosthouse.lognforget.Settings;
 import rosthouse.lognforget.util.ModKeyMapping;
+import rosthouse.lognforget.util.ResourceLoader;
 
 /**
  * FXML Controller class
@@ -28,11 +32,11 @@ import rosthouse.lognforget.util.ModKeyMapping;
 public class OptionsController implements Initializable, ChangeListener<Boolean> {
 
     @FXML
-    AnchorPane parent;
+    private AnchorPane parent;
     @FXML
-    TextField shortCut;
+    private TextField shortCut;
     @FXML
-    ComboBox<File> cmbAlertSound;
+    private ComboBox<String> cmbAlertSound;
 
     /**
      * Initializes the controller class.
@@ -40,14 +44,16 @@ public class OptionsController implements Initializable, ChangeListener<Boolean>
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         try {
-            shortCut.setText(Settings.getModKey().name() + "+" + (char) Settings.getShortCutKey());
-            shortCut.focusedProperty().addListener(this);
             loadAlertSounds();
+            setUpShortCutTextField();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
-        
+    }
+
+    private void setUpShortCutTextField() {
+        shortCut.setText(Settings.getModKey().name() + "+" + (char) Settings.getShortCutKey());
+        shortCut.focusedProperty().addListener(this);
     }
 
     public void closeWindow() {
@@ -105,26 +111,34 @@ public class OptionsController implements Initializable, ChangeListener<Boolean>
     public void onCancel() {
         closeWindow();
     }
-    
+
     @FXML
-    public void onPlayPressed(){
-        File alertSound = cmbAlertSound.getValue();
-        if(alertSound != null){
-            AudioClip clip = new AudioClip(alertSound.getAbsolutePath());
-            clip.play();
+    public void onPlayPressed() {
+        String fileName = cmbAlertSound.getValue();
+        if (fileName != null && !fileName.isEmpty()) {
+            String path = getClass().getResource("/audio/alert/" + fileName).toString();
+            AudioClip alert = new AudioClip(path);
+            alert.play();
         }
+
+    }
+
+    @FXML
+    public void onResetPressed() {
+        Settings.resetDefaults();
     }
 
     private void setOptions() {
         String text = shortCut.getText();
         String[] values = text.split("\\+");
-        Settings.setModKey(values[0]);
+        Settings.setModKey(ModKeyMapping.valueOf(values[0]));
         Settings.setShortCutKey(values[1].trim().charAt(0));
+        Settings.setAlertClip(cmbAlertSound.getValue());
     }
 
     @Override
     public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-        if (newValue) {
+        if (newValue != oldValue) {
             shortCut.clear();
             shortCut.setEditable(true);
         } else {
@@ -133,20 +147,19 @@ public class OptionsController implements Initializable, ChangeListener<Boolean>
     }
 
     private void loadAlertSounds() {
-        URL alertDirectoryPath = getClass().getResource("/audio/alert/");
-        File alertDirectory = null;
+        ObservableList<String> files = FXCollections.observableArrayList();
         try {
-            alertDirectory = new File(alertDirectoryPath.toURI());
+            for (String listFile : ResourceLoader.getResourceListing(this.getClass(), "audio/alert/")) {
+                if (listFile.endsWith("wav")) {
+                    files.add(listFile);
+                }
+            }
         } catch (URISyntaxException ex) {
             Logger.getLogger(OptionsController.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(OptionsController.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        if(alertDirectory.isDirectory()){
-            ObservableList<File> files =     FXCollections.observableArrayList();
-            
-            for (File listFile : alertDirectory.listFiles()) {
-                files.add(listFile);
-            }
-            cmbAlertSound.setItems(files);
-//        }
+        cmbAlertSound.setItems(files);
+        cmbAlertSound.setValue(Settings.getAlertClip());
     }
 }

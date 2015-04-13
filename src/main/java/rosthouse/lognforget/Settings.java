@@ -31,11 +31,7 @@ public class Settings {
     }
 
     public static void setModKey(ModKeyMapping mapping) {
-        setModKey(mapping.name());
-    }
-
-    public static void setModKey(String mapping) {
-        pref.put(Constants.MODIFIER_PREFERENCE, mapping);
+        pref.put(Constants.MODIFIER_PREFERENCE, mapping.name());
     }
 
     public static void addPreferencesChangedListener(PreferenceChangeListener listener) {
@@ -44,6 +40,22 @@ public class Settings {
 
     public static void removePreferencesChangedListener(PreferenceChangeListener listener) {
         pref.removePreferenceChangeListener(listener);
+    }
+    
+    public static void setAlertClip(String fileName){
+        pref.put(Constants.ALERT_CLIP, fileName);
+        
+    }
+    
+    public static String getAlertClip(){
+        return pref.get(Constants.ALERT_CLIP, "first.wav");
+    }
+    
+    public static void resetDefaults(){
+        pref.remove(Constants.ALERT_CLIP);
+        pref.remove(Constants.LOG_N_FORGET);
+        pref.remove(Constants.MODIFIER_PREFERENCE);
+        pref.remove(Constants.SHORTCUT_KEY_PREFERENCE);
     }
 
 }

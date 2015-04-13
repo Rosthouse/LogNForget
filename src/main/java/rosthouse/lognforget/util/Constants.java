@@ -15,6 +15,7 @@ public final class Constants {
     public static final String MODIFIER_PREFERENCE = "Modifier";
     public static final String LOG_N_FORGET = "LogNForget";
     public static final String SHORTCUT_KEY_PREFERENCE = "ShortcutKey";
+    public static final String ALERT_CLIP = "AlertClip";
 
     private Constants() {
     }

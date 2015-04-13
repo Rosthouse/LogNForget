@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
+import rosthouse.lognforget.Settings;
 import rosthouse.lognforget.WindowManager;
 import rosthouse.lognforget.reminder.ReminderController;
 import rosthouse.lognforget.shortcut.loggers.FileLogger;
@@ -96,7 +97,7 @@ public class ShortCutListenerController extends Pane implements Initializable {
                 controller.setText(text);
                 stage.setAlwaysOnTop(true);
                 stage.show();
-                AudioClip alert = new AudioClip(getClass().getResource("/audio/alert/72125__kizilsungur__sweetalertsound1.wav").toString());
+                AudioClip alert = new AudioClip(getClass().getResource("/audio/alert/" + Settings.getAlertClip()).toString());
                 alert.play();
             }
         };
