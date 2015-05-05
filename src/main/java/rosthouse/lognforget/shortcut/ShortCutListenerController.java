@@ -2,7 +2,6 @@ package rosthouse.lognforget.shortcut;
 
 import java.net.URL;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
@@ -12,20 +11,23 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import org.controlsfx.control.PopOver;
 import rosthouse.lognforget.Settings;
 import rosthouse.lognforget.WindowManager;
-import rosthouse.lognforget.reminder.ReminderController;
 import rosthouse.lognforget.shortcut.loggers.FileLogger;
 import rosthouse.lognforget.shortcut.loggers.Logger;
-import sun.audio.AudioPlayer;
 
 /**
  * Controlls GUIs created by the fxml file editor.fxml.
@@ -81,24 +83,34 @@ public class ShortCutListenerController extends Pane implements Initializable {
 
             @Override
             public void run() {
-                    if (Platform.isFxApplicationThread()) {
-                   openWindow(textWithoutModifier);
-               } else {
-                   Platform.runLater(() -> openWindow(textWithoutModifier));
-               }
+                if (Platform.isFxApplicationThread()) {
+                    openWindow(textWithoutModifier);
+                } else {
+                    Platform.runLater(() -> openWindow(textWithoutModifier));
+                }
             }
 
             private void openWindow(String text) {
-                FXMLLoader loader = WindowManager.createLoader("/fxml/Reminder.fxml");
+
+                FXMLLoader loader = WindowManager.createLoader("/fxml/Editor.fxml");
                 Parent root = WindowManager.createRootNode(loader);
                 Stage stage = WindowManager.createStage(root);
-                ReminderController controller = loader.getController();
-                controller.setTime(LocalDateTime.now());
-                controller.setText(text);
+                ShortCutListenerController controller = loader.getController();
+                PopOver timerPopOver = createPopOver(text);
                 stage.setAlwaysOnTop(true);
+                stage.initStyle(StageStyle.TRANSPARENT);
                 stage.show();
+                timerPopOver.show(controller.getEditor());
                 AudioClip alert = new AudioClip(getClass().getResource("/audio/alert/" + Settings.getAlertClip()).toString());
                 alert.play();
+            }
+
+            private PopOver createPopOver(String text1) {
+                PopOver timerPopOver = new PopOver();
+                Pane timerPopOverContent = new AnchorPane();
+                timerPopOverContent.getChildren().add(new Label(text1));
+                timerPopOver.setContentNode(timerPopOverContent);
+                return timerPopOver;
             }
         };
         timer.schedule(tTask, duration.toMillis());
@@ -130,6 +142,10 @@ public class ShortCutListenerController extends Pane implements Initializable {
         }
         ZonedDateTime target = time.plus(durationLenght, unit);
         return Duration.between(time, target);
+    }
+
+    private Node getEditor() {
+        return this.logField;
     }
 
 }
