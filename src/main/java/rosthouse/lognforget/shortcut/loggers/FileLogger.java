@@ -14,7 +14,7 @@ import java.util.logging.Level;
 import rosthouse.lognforget.shortcut.ShortCutListenerController;
 
 /**
- * TODO
+ * Logs all text to a text file.
  *
  * @author Rosthouse <rosthouse@gmail.com>
  * @created 12.03.2015 14:49:06

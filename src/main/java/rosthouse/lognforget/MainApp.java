@@ -12,10 +12,9 @@ import rosthouse.lognforget.util.ModKeyMapping;
 
 public class MainApp extends Application {
 
-
     @Override
     public void start(Stage stage) throws Exception {
-        
+
         Platform.setImplicitExit(false);
         JIntellitype instance = JIntellitype.getInstance();
         initializeShortCutListener(instance);
@@ -24,10 +23,10 @@ public class MainApp extends Application {
 
     private void initializeShortCutListener(JIntellitype instance) {
         ShortCutListener listener = new ShortCutListener();
-        
+        ReminderManager reminder = new ReminderManager();
+        listener.setLogEventHandler(reminder);
         listener.registerHotKeyForLogging(Settings.getModKey(), Settings.getShortCutKey());
     }
-
 
     /**
      * The main() method is ignored in correctly deployed JavaFX application.

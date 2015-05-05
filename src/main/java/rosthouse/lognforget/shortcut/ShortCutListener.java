@@ -2,13 +2,18 @@ package rosthouse.lognforget.shortcut;
 
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.prefs.PreferenceChangeEvent;
 import java.util.prefs.PreferenceChangeListener;
 import javafx.application.Platform;
+import javafx.event.EventType;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import rosthouse.lognforget.Settings;
-import static rosthouse.lognforget.WindowManager.loadWindow;
+import rosthouse.lognforget.reminder.LogEvent;
+import rosthouse.lognforget.reminder.LogEventHandler;
+import static rosthouse.lognforget.util.WindowManager.loadWindow;
 import rosthouse.lognforget.util.ModKeyMapping;
 
 /**
@@ -22,8 +27,10 @@ public class ShortCutListener implements HotkeyListener, PreferenceChangeListene
     final private JIntellitype instance;
     private static final int SHORTCUT_LISTENER_IDENTIFIER = 1;
     private Stage stage;
+    private List<LogEventHandler> eventHandlers;
 
     public ShortCutListener() {
+        this.eventHandlers = new ArrayList<LogEventHandler>();
         this.instance = JIntellitype.getInstance();
         instance.addHotKeyListener(this);
         Settings.addPreferencesChangedListener(this);
@@ -33,9 +40,11 @@ public class ShortCutListener implements HotkeyListener, PreferenceChangeListene
         stage = loadWindow("/fxml/Editor.fxml");
         stage.setAlwaysOnTop(true);
         stage.initStyle(StageStyle.TRANSPARENT);
+        for (LogEventHandler eventHandler : eventHandlers) {
+            stage.addEventHandler(LogEvent.LOG_EVENT, eventHandler);
+        }
         stage.show();
     }
-
 
     @Override
     public void onHotKey(int i) {
@@ -56,5 +65,9 @@ public class ShortCutListener implements HotkeyListener, PreferenceChangeListene
         ModKeyMapping modKeyMapping = Settings.getModKey();
         char shortCutKey = (char) Settings.getShortCutKey();
         instance.registerHotKey(SHORTCUT_LISTENER_IDENTIFIER, modKeyMapping.getJIntelitypeKey(), shortCutKey);
+    }
+
+    public void setLogEventHandler(LogEventHandler logEventHandler) {
+        this.eventHandlers.add(logEventHandler);
     }
 }

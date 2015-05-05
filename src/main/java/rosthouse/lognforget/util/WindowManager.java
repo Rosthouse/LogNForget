@@ -3,18 +3,30 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rosthouse.lognforget;
+package rosthouse.lognforget.util;
 
 import java.io.IOException;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import org.controlsfx.control.PopOver;
+import rosthouse.lognforget.Settings;
 import rosthouse.lognforget.shortcut.ShortCutListener;
+import rosthouse.lognforget.shortcut.ShortCutListenerController;
 
 /**
  *
@@ -33,7 +45,7 @@ public class WindowManager {
         try {
             root = loader.load();
         } catch (IOException ex) {
-            Logger.getLogger(ShortCutListener.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(WindowManager.class.getName()).log(Level.SEVERE, null, ex);
             throw new IllegalArgumentException("Couldn't find FXML file", ex);
         }
         return root;
@@ -53,5 +65,5 @@ public class WindowManager {
         loader.setLocation(WindowManager.class.getResource(scenePath));
         return loader;
     }
-    
+
 }

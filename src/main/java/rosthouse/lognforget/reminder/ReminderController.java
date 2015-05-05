@@ -20,7 +20,7 @@ import javafx.scene.control.Label;
  * @author Patrick Joos <patrick.joos@wuerth-itensis.ch>
  */
 public class ReminderController implements Initializable {
-    
+
     @FXML
     private Button bntPostPone;
     @FXML
@@ -37,15 +37,15 @@ public class ReminderController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }
-    
+
     @FXML
-    public void onShutdownReminderClicked(){
-        
+    public void onShutdownReminderClicked() {
+
     }
-    
+
     @FXML
-    public void onPostPoneClicked(){
-        
+    public void onPostPoneClicked() {
+
     }
 
     public void setTime(LocalDateTime now) {

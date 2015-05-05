@@ -13,7 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import rosthouse.lognforget.WindowManager;
+import rosthouse.lognforget.util.WindowManager;
 import rosthouse.lognforget.shortcut.ShortCutListener;
 import rosthouse.lognforget.shortcut.ShortCutListenerController;
 

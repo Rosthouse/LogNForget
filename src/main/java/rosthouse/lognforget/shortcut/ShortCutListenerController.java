@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 import java.util.Timer;
 import java.util.TimerTask;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -23,11 +25,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.media.AudioClip;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 import org.controlsfx.control.PopOver;
 import rosthouse.lognforget.Settings;
-import rosthouse.lognforget.WindowManager;
+import rosthouse.lognforget.reminder.LogEvent;
 import rosthouse.lognforget.shortcut.loggers.FileLogger;
 import rosthouse.lognforget.shortcut.loggers.Logger;
+import rosthouse.lognforget.util.MediaPlayer;
+import rosthouse.lognforget.util.WindowManager;
 
 /**
  * Controlls GUIs created by the fxml file editor.fxml.
@@ -63,11 +68,8 @@ public class ShortCutListenerController extends Pane implements Initializable {
     @FXML
     public void onEnter() {
         String text = logField.getText();
-        if (text.startsWith("+")) {
-            createReminder(text);
-        } else {
-            logger.logText(text);
-        }
+        parent.fireEvent(new LogEvent(text));
+        logger.logText(text);
         closeWindow();
     }
 
@@ -75,76 +77,7 @@ public class ShortCutListenerController extends Pane implements Initializable {
         this.logger = logger;
     }
 
-    private void createReminder(String text) {
-        Duration duration = getDurationFromNowUntilReminder(text);
-        final String textWithoutModifier = removeModifierFromText(text);
-        Timer timer = new Timer();
-        TimerTask tTask = new TimerTask() {
-
-            @Override
-            public void run() {
-                if (Platform.isFxApplicationThread()) {
-                    openWindow(textWithoutModifier);
-                } else {
-                    Platform.runLater(() -> openWindow(textWithoutModifier));
-                }
-            }
-
-            private void openWindow(String text) {
-
-                FXMLLoader loader = WindowManager.createLoader("/fxml/Editor.fxml");
-                Parent root = WindowManager.createRootNode(loader);
-                Stage stage = WindowManager.createStage(root);
-                ShortCutListenerController controller = loader.getController();
-                PopOver timerPopOver = createPopOver(text);
-                stage.setAlwaysOnTop(true);
-                stage.initStyle(StageStyle.TRANSPARENT);
-                stage.show();
-                timerPopOver.show(controller.getEditor());
-                AudioClip alert = new AudioClip(getClass().getResource("/audio/alert/" + Settings.getAlertClip()).toString());
-                alert.play();
-            }
-
-            private PopOver createPopOver(String text1) {
-                PopOver timerPopOver = new PopOver();
-                Pane timerPopOverContent = new AnchorPane();
-                timerPopOverContent.getChildren().add(new Label(text1));
-                timerPopOver.setContentNode(timerPopOverContent);
-                return timerPopOver;
-            }
-        };
-        timer.schedule(tTask, duration.toMillis());
-    }
-
-    String removeModifierFromText(String text) {
-        int firstIndexOfSpace = text.indexOf(" ");
-        return text.substring(firstIndexOfSpace + 1);
-    }
-
-    Duration getDurationFromNowUntilReminder(String text) {
-        String duration = text.substring(0, text.indexOf(" "));
-        ZonedDateTime time = ZonedDateTime.now();
-        int durationLenght = Integer.parseInt(duration.substring(1, duration.length() - 1));
-        ChronoUnit unit;
-        Character timeUnit = duration.charAt(duration.length() - 1);
-        switch (timeUnit) {
-            case 'm':
-                unit = ChronoUnit.MINUTES;
-                break;
-            case 's':
-                unit = ChronoUnit.SECONDS;
-                break;
-            case 'h':
-                unit = ChronoUnit.HOURS;
-                break;
-            default:
-                throw new IllegalArgumentException(String.format("The text does not contain a valid duration: %s", duration));
-        }
-        ZonedDateTime target = time.plus(durationLenght, unit);
-        return Duration.between(time, target);
-    }
-
-    private Node getEditor() {
+    public Node getEditor() {
         return this.logField;
     }
 

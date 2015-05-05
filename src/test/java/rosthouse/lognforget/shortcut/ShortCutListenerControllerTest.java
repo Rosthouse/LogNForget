@@ -30,17 +30,4 @@ public class ShortCutListenerControllerTest {
         controller = new ShortCutListenerController();
     }
 
-    @Test
-    public void testGetText() {
-        String text = "+20m Meeting with John";
-        assertThat(controller.removeModifierFromText(text), equalTo("Meeting with John"));
-    }
-
-    @Test
-    public void testGetDuration() {
-        String text = "+20m Meeting with John";
-        Long minutes = 20l;
-        assertThat(controller.getDurationFromNowUntilReminder(text).toMinutes(), equalTo(minutes));
-    }
-
 }
