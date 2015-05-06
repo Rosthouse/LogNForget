@@ -52,12 +52,16 @@ public class ReminderManager implements LogEventHandler {
         final String textWithoutModifier = removeModifierFromText(text);
         Runnable tTask = () -> {
             if (Platform.isFxApplicationThread()) {
-                openWindow(text);
+                createNotification(text);
             } else {
-                Platform.runLater(() -> openWindow(text));
+                Platform.runLater(() -> {
+                    createNotification(text);
+                    MediaPlayer.playAudio("/audio/alert/" + Settings.getAlertClip());
+                });
             }
         };
         service.schedule(tTask, duration.toMillis(), TimeUnit.MILLISECONDS);
+        createNotification("Created timer, which will go off in " + duration.toString());
     }
 
     static String removeModifierFromText(String text) {
@@ -88,7 +92,7 @@ public class ReminderManager implements LogEventHandler {
         return Duration.between(time, target);
     }
 
-    private void openWindow(String text) {
+    private void createNotification(String text) {
         Platform.runLater(() -> {
             Stage owner = new Stage(StageStyle.TRANSPARENT);
             StackPane root = new StackPane();
@@ -104,7 +108,6 @@ public class ReminderManager implements LogEventHandler {
             image.setFitHeight(64);
             image.setFitWidth(64);
             Notifications.create().title("Reminder").text(text).graphic(image).show();
-            MediaPlayer.playAudio("/audio/alert/" + Settings.getAlertClip());
         });
     }
 
