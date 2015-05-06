@@ -23,6 +23,8 @@ import org.controlsfx.control.Notifications;
 import org.controlsfx.glyphfont.FontAwesome;
 import org.controlsfx.glyphfont.GlyphFont;
 import org.controlsfx.glyphfont.GlyphFontRegistry;
+import rosthouse.lognforget.Settings;
+import rosthouse.lognforget.util.MediaPlayer;
 
 /**
  * Handles all Reminders.
@@ -102,6 +104,7 @@ public class ReminderManager implements LogEventHandler {
             image.setFitHeight(64);
             image.setFitWidth(64);
             Notifications.create().title("Reminder").text(text).graphic(image).show();
+            MediaPlayer.playAudio("/audio/alert/" + Settings.getAlertClip());
         });
     }
 
