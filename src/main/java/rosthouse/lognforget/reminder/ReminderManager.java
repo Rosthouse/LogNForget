@@ -13,11 +13,16 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.controlsfx.control.Notifications;
+import org.controlsfx.glyphfont.FontAwesome;
+import org.controlsfx.glyphfont.GlyphFont;
+import org.controlsfx.glyphfont.GlyphFontRegistry;
 
 /**
  * Handles all Reminders.
@@ -93,7 +98,10 @@ public class ReminderManager implements LogEventHandler {
             owner.setHeight(1);
             owner.toBack();
             owner.show();
-            Notifications.create().title("Reminder").text(text).showInformation();
+            ImageView image = new ImageView("/images/alarm_clock.png");
+            image.setFitHeight(64);
+            image.setFitWidth(64);
+            Notifications.create().title("Reminder").text(text).graphic(image).show();
         });
     }
 
