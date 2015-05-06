@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rosthouse.lognforget;
+package rosthouse.lognforget.reminder;
 
+import rosthouse.lognforget.reminder.ReminderManager;
 import java.time.Duration;
 import static org.hamcrest.Matchers.equalTo;
 import org.junit.After;

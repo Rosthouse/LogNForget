@@ -55,7 +55,7 @@ public class WindowManager {
         final Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");
         scene.setFill(new Color(0, 0, 0, 0));
-        Stage stage = new Stage();
+        final Stage stage = new Stage();
         stage.setScene(scene);
         return stage;
     }

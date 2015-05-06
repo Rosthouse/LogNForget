@@ -1,5 +1,6 @@
 package rosthouse.lognforget;
 
+import rosthouse.lognforget.reminder.ReminderManager;
 import com.melloware.jintellitype.JIntellitype;
 import java.util.prefs.Preferences;
 import javafx.application.Application;

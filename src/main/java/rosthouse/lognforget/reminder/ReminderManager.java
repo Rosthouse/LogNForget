@@ -3,32 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package rosthouse.lognforget;
+package rosthouse.lognforget.reminder;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.control.Label;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.controlsfx.control.PopOver;
-import rosthouse.lognforget.reminder.LogEvent;
-import rosthouse.lognforget.reminder.LogEventHandler;
-import rosthouse.lognforget.shortcut.ShortCutListenerController;
-import rosthouse.lognforget.util.MediaPlayer;
-import rosthouse.lognforget.util.WindowManager;
+import org.controlsfx.control.Notifications;
 
 /**
  * Handles all Reminders.
@@ -93,24 +82,19 @@ public class ReminderManager implements LogEventHandler {
     }
 
     private void openWindow(String text) {
-        Stage stage = WindowManager.loadWindow("/fxml/Editor.fxml");
-        stage.addEventHandler(LogEvent.LOG_EVENT, this);
-        PopOver timerPopOver = createPopOver(text);
-        stage.setAlwaysOnTop(true);
-        stage.initStyle(StageStyle.TRANSPARENT);
-        stage.show();
-        timerPopOver.show(stage);
-        MediaPlayer.playAudio("/audio/alert/" + Settings.getAlertClip());
-    }
-
-    private PopOver createPopOver(String text1) {
-        PopOver timerPopOver = new PopOver();
-        timerPopOver.setArrowLocation(PopOver.ArrowLocation.LEFT_BOTTOM);
-        Pane timerPopOverContent = new AnchorPane();
-        timerPopOverContent.getChildren().add(new Label(text1));
-        timerPopOver.setContentNode(timerPopOverContent);
-        timerPopOver.setAutoHide(true);
-        return timerPopOver;
+        Platform.runLater(() -> {
+            Stage owner = new Stage(StageStyle.TRANSPARENT);
+            StackPane root = new StackPane();
+            root.setStyle("-fx-background-color: TRANSPARENT");
+            Scene scene = new Scene(root, 1, 1);
+            scene.setFill(Color.TRANSPARENT);
+            owner.setScene(scene);
+            owner.setWidth(1);
+            owner.setHeight(1);
+            owner.toBack();
+            owner.show();
+            Notifications.create().title("Reminder").text(text).showInformation();
+        });
     }
 
 }
