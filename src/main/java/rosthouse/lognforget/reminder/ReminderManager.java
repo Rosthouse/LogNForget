@@ -13,16 +13,12 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javafx.application.Platform;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.controlsfx.control.Notifications;
-import org.controlsfx.glyphfont.FontAwesome;
-import org.controlsfx.glyphfont.GlyphFont;
-import org.controlsfx.glyphfont.GlyphFontRegistry;
 import rosthouse.lognforget.Settings;
 import rosthouse.lognforget.util.MediaPlayer;
 
@@ -94,7 +90,7 @@ public class ReminderManager implements LogEventHandler {
 
     private void createNotification(String text) {
         Platform.runLater(() -> {
-            Stage owner = new Stage(StageStyle.TRANSPARENT);
+            Stage owner = new Stage(StageStyle.UNDECORATED);
             StackPane root = new StackPane();
             root.setStyle("-fx-background-color: TRANSPARENT");
             Scene scene = new Scene(root, 1, 1);
@@ -107,7 +103,13 @@ public class ReminderManager implements LogEventHandler {
             ImageView image = new ImageView("/images/alarm_clock.png");
             image.setFitHeight(64);
             image.setFitWidth(64);
-            Notifications.create().title("Reminder").text(text).graphic(image).show();
+            Notifications notification = Notifications.create();
+            notification.title("Reminder");
+            notification.text(text);
+            notification.graphic(image);
+            notification.hideAfter(javafx.util.Duration.seconds(10));
+            notification.show();
+            owner.hide();
         });
     }
 
