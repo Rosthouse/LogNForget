@@ -1,21 +1,16 @@
 package rosthouse.lognforget;
 
-import rosthouse.lognforget.reminder.ReminderManager;
-import com.melloware.jintellitype.JIntellitype;
-import java.util.prefs.Preferences;
-import javafx.application.Application;
+import com.melloware.jintellitype.*;
 import static javafx.application.Application.launch;
-import javafx.application.Platform;
-import javafx.stage.Stage;
-import rosthouse.lognforget.shortcut.ShortCutListener;
-import rosthouse.lognforget.util.Constants;
-import rosthouse.lognforget.util.ModKeyMapping;
+import javafx.application.*;
+import javafx.stage.*;
+import rosthouse.lognforget.reminder.*;
+import rosthouse.lognforget.shortcut.*;
 
 public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         Platform.setImplicitExit(false);
         JIntellitype instance = JIntellitype.getInstance();
         initializeShortCutListener(instance);

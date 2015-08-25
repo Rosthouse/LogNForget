@@ -5,22 +5,16 @@
  */
 package rosthouse.lognforget.reminder;
 
-import java.time.Duration;
-import java.time.ZonedDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import org.controlsfx.control.Notifications;
-import rosthouse.lognforget.Settings;
-import rosthouse.lognforget.util.MediaPlayer;
+import java.time.*;
+import java.time.temporal.*;
+import java.util.concurrent.*;
+import javafx.animation.*;
+import javafx.application.*;
+import javafx.scene.control.*;
+import javafx.scene.control.Alert.AlertType;
+import javafx.stage.*;
+import rosthouse.lognforget.*;
+import rosthouse.lognforget.util.*;
 
 /**
  * Handles all Reminders.
@@ -48,7 +42,7 @@ public class ReminderManager implements LogEventHandler {
         final String textWithoutModifier = removeModifierFromText(text);
         Runnable tTask = () -> {
             if (Platform.isFxApplicationThread()) {
-                createNotification(text);
+                createNotification(textWithoutModifier);
             } else {
                 Platform.runLater(() -> {
                     createNotification(text);
@@ -88,29 +82,18 @@ public class ReminderManager implements LogEventHandler {
         return Duration.between(time, target);
     }
 
-    private void createNotification(String text) {
-        Platform.runLater(() -> {
-            Stage owner = new Stage(StageStyle.UNDECORATED);
-            StackPane root = new StackPane();
-            root.setStyle("-fx-background-color: TRANSPARENT");
-            Scene scene = new Scene(root, 1, 1);
-            scene.setFill(Color.TRANSPARENT);
-            owner.setScene(scene);
-            owner.setWidth(1);
-            owner.setHeight(1);
-            owner.toBack();
-            owner.show();
-            ImageView image = new ImageView("/images/alarm_clock.png");
-            image.setFitHeight(64);
-            image.setFitWidth(64);
-            Notifications notification = Notifications.create();
-            notification.title("Reminder");
-            notification.text(text);
-            notification.graphic(image);
-            notification.hideAfter(javafx.util.Duration.seconds(10));
-            notification.show();
-            owner.hide();
-        });
+    private void createNotification(final String text) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.initStyle(StageStyle.TRANSPARENT);
+        alert.setContentText(text);
+        alert.getDialogPane().setStyle("-fx-background-color: transparent;");
+        alert.show();
+        FadeTransition fade = new FadeTransition(javafx.util.Duration.seconds(5), alert.getDialogPane());
+        fade.setFromValue(1.0);
+        fade.setToValue(0);
+        fade.setCycleCount(1);
+        fade.setOnFinished(e -> alert.hide());
+        fade.play();
     }
 
 }

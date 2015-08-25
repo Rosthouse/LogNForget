@@ -13,13 +13,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <mainClass>rosthouse.lognforget.MainApp</mainClass>
     </properties>
-
     <organization>
-        <!-- Used as the 'Vendor' for JNLP generation -->
         <name>Rosthouse</name>
     </organization>
-
-
     <build>
         <finalName>${project.name}</finalName>
         <pluginManagement>
@@ -139,7 +135,7 @@
         <dependency>
             <groupId>org.controlsfx</groupId>
             <artifactId>controlsfx</artifactId>
-            <version>8.20.7</version>
+            <version>8.40.9</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
