@@ -8,11 +8,7 @@ package rosthouse.lognforget.reminder;
 import java.time.*;
 import java.time.temporal.*;
 import java.util.concurrent.*;
-import javafx.animation.*;
 import javafx.application.*;
-import javafx.scene.control.*;
-import javafx.scene.control.Alert.AlertType;
-import javafx.stage.*;
 import rosthouse.lognforget.*;
 import rosthouse.lognforget.util.*;
 
@@ -23,10 +19,14 @@ import rosthouse.lognforget.util.*;
  */
 public class ReminderManager implements LogEventHandler {
 
+    private static int offset = 0;
     private ScheduledExecutorService service;
+
+    private ReminderController controller;
 
     public ReminderManager() {
         service = Executors.newScheduledThreadPool(1);
+        controller = new ReminderController();
     }
 
     @Override
@@ -83,17 +83,7 @@ public class ReminderManager implements LogEventHandler {
     }
 
     private void createNotification(final String text) {
-        Alert alert = new Alert(AlertType.INFORMATION);
-        alert.initStyle(StageStyle.TRANSPARENT);
-        alert.setContentText(text);
-        alert.getDialogPane().setStyle("-fx-background-color: transparent;");
-        alert.show();
-        FadeTransition fade = new FadeTransition(javafx.util.Duration.seconds(5), alert.getDialogPane());
-        fade.setFromValue(1.0);
-        fade.setToValue(0);
-        fade.setCycleCount(1);
-        fade.setOnFinished(e -> alert.hide());
-        fade.play();
+        controller.createReminder(text);
     }
 
 }
